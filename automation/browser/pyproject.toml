@@ -1,0 +1,23 @@
+[project]
+name = "yavar-browser-worker"
+version = "0.1.0"
+description = "Yavar browser automation worker environment (Playwright + Chromium)"
+# 3.12 floor matches the Python shipped in the Playwright Docker base image.
+requires-python = ">=3.12"
+dependencies = [
+    # Pinned to match the Playwright Docker base image version.
+    "playwright==1.63.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.12",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
