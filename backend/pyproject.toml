@@ -14,6 +14,9 @@ dependencies = [
     "django-celery-beat>=2.8",
     "redis>=5.2",
     "pydantic>=2.11",
+    "jdatetime>=5.2",
+    "httpx>=0.28",
+    "pillow>=11.0",
 ]
 
 [dependency-groups]
@@ -21,6 +24,7 @@ dev = [
     "pytest>=8.3",
     "pytest-django>=4.11",
     "ruff>=0.12",
+    "freezegun>=1.5",
 ]
 
 [tool.ruff]
@@ -29,9 +33,12 @@ target-version = "py313"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "DJ"]
-ignore = []
+ignore = ["E501", "DJ008"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.development"
 python_files = ["test_*.py", "tests.py"]
 testpaths = ["apps"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

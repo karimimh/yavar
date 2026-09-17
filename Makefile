@@ -1,4 +1,4 @@
-.PHONY: install up down logs build web backend migrate worker beat test test-web test-backend lint format
+.PHONY: install up down logs build web backend migrate worker beat test test-web test-backend lint format seed-demo seed
 
 # ----- Setup -----
 
@@ -31,6 +31,12 @@ backend: ## Run the Django dev server locally
 
 migrate: ## Run Django migrations
 	cd backend && uv run python manage.py migrate
+
+seed: ## Seed sandbox capabilities and plans
+	cd backend && uv run python manage.py seed_capabilities
+
+seed-demo: ## Create a clearly labeled sandbox demo user
+	cd backend && uv run python manage.py seed_demo
 
 worker: ## Start a Celery worker locally
 	cd backend && uv run celery -A config worker --loglevel=info

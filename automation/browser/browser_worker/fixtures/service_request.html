@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <title>درخواست نوبت آزمایشی یاور</title>
+  </head>
+  <body>
+    <h1>فرم درخواست تعویض روغن (سندباکس)</h1>
+    <p>این فرم غیرالزام‌آور است و پیش‌پرداخت ندارد.</p>
+    <form id="request-form" action="/submit" method="post">
+      <label>نام <input name="name" required /></label>
+      <label>تلفن <input name="phone" required /></label>
+      <label>منطقه <input name="area" /></label>
+      <label>زمان پیشنهادی <input name="preferred_slot" /></label>
+      <label>یادداشت <textarea name="note"></textarea></label>
+      <button type="submit" id="submit">ارسال درخواست نوبت</button>
+    </form>
+    <p id="result" hidden>درخواست دریافت شد. کد مرجع: SBX-LOCAL. نوبت تأیید نشده است.</p>
+    <script>
+      document.getElementById("request-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        document.getElementById("result").hidden = false;
+      });
+    </script>
+  </body>
+</html>

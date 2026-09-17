@@ -38,8 +38,23 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "django_celery_beat",
-    # Local infrastructure apps
+    # Local apps
     "apps.core",
+    "apps.accounts",
+    "apps.billing",
+    "apps.conversations",
+    "apps.tasks",
+    "apps.approvals",
+    "apps.reminders",
+    "apps.notifications",
+    "apps.memory",
+    "apps.coverage",
+    "apps.research",
+    "apps.travel",
+    "apps.bills",
+    "apps.requests",
+    "apps.agent",
+    "apps.operators",
 ]
 
 MIDDLEWARE = [
@@ -62,9 +77,9 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.request",
             ],
         },
     },
@@ -89,7 +104,7 @@ DATABASES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Password validation
+AUTH_USER_MODEL = "accounts.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -98,29 +113,44 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# Internationalization
-# The product will target Persian (fa-IR); default language stays English
-# until localization work begins.
-
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "fa"
 TIME_ZONE = "Asia/Tehran"
 USE_I18N = True
 USE_TZ = True
 
-# Static files
-
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
-# Django REST Framework
+# Sessions: HTTP-only cookie, no tokens in localStorage.
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE", default=False)
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SECURE = env.bool("CSRF_COOKIE_SECURE", default=False)
+CSRF_TRUSTED_ORIGINS = env.list(
+    "CSRF_TRUSTED_ORIGINS",
+    default=["http://localhost:3000", "http://127.0.0.1:3000"],
+)
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = env.list(
+    "CORS_ALLOWED_ORIGINS",
+    default=["http://localhost:3000", "http://127.0.0.1:3000"],
+)
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
-
-# Celery
 
 REDIS_URL = env("REDIS_URL", default="redis://localhost:6379/0")
 
@@ -131,3 +161,25 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_BEAT_SCHEDULE = {
+    "tick-due-reminders": {
+        "task": "apps.agent.tasks.tick_due_reminders",
+        "schedule": 15.0,
+    },
+    "purge-screenshots": {
+        "task": "apps.agent.tasks.purge_expired_screenshots",
+        "schedule": 3600.0,
+    },
+    "purge-temp-ids": {
+        "task": "apps.agent.tasks.purge_temporary_identifiers",
+        "schedule": 3600.0,
+    },
+}
+
+# Integrations — sandbox by default; missing keys never fabricate facts.
+LLM_BASE_URL = env("LLM_BASE_URL", default="https://api.openai.com/v1")
+LLM_API_KEY = env("LLM_API_KEY", default="")
+LLM_MODEL = env("LLM_MODEL", default="gpt-4o-mini")
+SMS_PROVIDER = env("SMS_PROVIDER", default="console")
+PROVIDER_MODE = env("PROVIDER_MODE", default="sandbox")
+PAYMENT_PROVIDER = env("PAYMENT_PROVIDER", default="sandbox")

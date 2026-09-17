@@ -15,6 +15,7 @@ htmlcov/
 
 # Django
 backend/staticfiles/
+backend/media/
 *.sqlite3
 celerybeat-schedule*
 

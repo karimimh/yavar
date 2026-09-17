@@ -1,0 +1,19 @@
+{
+  "name": "یاور",
+  "short_name": "یاور",
+  "description": "دستیار اقدام فارسی — آزمایشی/سندباکس",
+  "start_url": "/",
+  "display": "standalone",
+  "dir": "rtl",
+  "lang": "fa",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
