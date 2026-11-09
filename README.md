@@ -233,3 +233,7 @@ product spec in `docs/`. Everything runs locally against sandbox adapters. It
 has not been deployed, has no real users, and still needs live provider
 integrations, a real SMS gateway and a payment service provider (PSP) before
 any public beta.
+
+## License
+
+Released under the [GNU Affero General Public License v3.0](LICENSE). If you run a modified version as a network service, you must make its source code available to its users.
