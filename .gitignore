@@ -1,12 +1,14 @@
 # Environment files
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 # Python
 __pycache__/
 *.py[cod]
 .venv/
+venv/
+.mypy_cache/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
@@ -26,20 +28,26 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 npm-debug.log*
+dist/
+build/
+.vercel/
 
 # Playwright
 playwright-report/
 test-results/
 blob-report/
 
-# IDE / editor
+# IDE / editor / local tooling
 .idea/
 .vscode/
 *.swp
+*~
+.claude/settings.local.json
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Docker runtime artifacts
+# Logs and runtime artifacts
+*.log
 *.pid
